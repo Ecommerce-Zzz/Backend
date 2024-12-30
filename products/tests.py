@@ -49,7 +49,16 @@ class ProductTests(APITestCase):
     def test_create_view(self):
         response = self.client.post(reverse("product_list_create"), data=self.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.json()["title"], "test")
         self.assertEqual(Product.objects.count(), 2)
         self.assertEqual(Product.objects.first().title, "title")
         self.assertEqual(Product.objects.last().title, "test")
-        self.assertEqual(response.json()["title"], "test")
+
+    def test_detail_view(self):
+        response = self.client.get(
+            reverse("product_detail", kwargs={"pk": self.product.pk})
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertContains(response, self.product)
+        self.assertEqual(response.json()["title"], "title")
+        self.assertEqual(response.json()["owner"], self.user.username)
