@@ -56,9 +56,30 @@ class ProductTests(APITestCase):
 
     def test_detail_view(self):
         response = self.client.get(
-            reverse("product_detail", kwargs={"pk": self.product.pk})
+            reverse("product_info", kwargs={"pk": self.product.pk})
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertContains(response, self.product)
         self.assertEqual(response.json()["title"], "title")
         self.assertEqual(response.json()["owner"], self.user.username)
+        self.assertEqual(response.json()["on_stack"], "Out of stack")
+
+    def test_update_view(self):
+        response = self.client.patch(
+            reverse("product_info", kwargs={"pk": self.product.pk}),
+            data={
+                "title": "new title",
+                "available": True,
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertContains(response, self.product)
+        self.assertEqual(response.json()["title"], "new title")
+        self.assertEqual(response.json()["owner"], self.user.username)
+        self.assertEqual(response.json()["on_stack"], "On stack")
+
+    def test_delete_view(self):
+        response = self.client.delete(
+            reverse("product_info", kwargs={"pk": self.product.pk}),
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

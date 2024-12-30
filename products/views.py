@@ -10,7 +10,7 @@ class ProductListView(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
 
 
-class ProductDetailView(generics.RetrieveAPIView):
+class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = "pk"

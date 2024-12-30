@@ -20,3 +20,6 @@ class Product(models.Model):
 
     def is_available(self):
         return self.available
+
+    def save(self, *args, **kwargs):
+        return super().save(*args, **kwargs)
