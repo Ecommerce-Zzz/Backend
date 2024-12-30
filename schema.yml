@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: E-Commerce APIs
+  version: 1.0.0
+  description: APIs for my simple e-commerce app
+paths: {}
+components: {}
