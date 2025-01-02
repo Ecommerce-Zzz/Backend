@@ -3,7 +3,7 @@ from .models import Product
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    on_stack = serializers.SerializerMethodField(read_only=True)
+    on_stock = serializers.SerializerMethodField(read_only=True)
     owner = serializers.CharField(source="owner.username", read_only=True)
     available = serializers.BooleanField(write_only=True)
     url = serializers.HyperlinkedIdentityField(
@@ -19,7 +19,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "price",
             "owner",
             "available",
-            "on_stack",
+            "on_stock",
         ]
 
     """
@@ -51,7 +51,7 @@ class ProductSerializer(serializers.ModelSerializer):
         Return if the product is on stack or not by searching for its availability
     """
 
-    def get_on_stack(self, obj):
+    def get_on_stock(self, obj):
         if obj.available:
-            return "On stack"
-        return "Out of stack"
+            return "On stock"
+        return "Out of stock"
